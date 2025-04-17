@@ -10,5 +10,5 @@ PyPDF2==3.0.1
 transformers==4.50.3
 langchain-openai==0.3.12
 chromadb==1.0.4
-google-generativeai=0.8.4
+
 
