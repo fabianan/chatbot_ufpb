@@ -52,6 +52,8 @@ with st.sidebar:
         with st.spinner("Reindexando base vetorial..."):
             vector_db = carregar_banco_vetorial(reindexar=True)
             st.session_state.rag, st.session_state.memory = montar_rag(vector_db, UNIDADES_NEGOCIAIS)
+            rag = st.session_state.rag
+            memory = st.session_state.memory
             st.success("Base vetorial atualizada!")
     if st.button("🚪 Sair"):
         st.stop()

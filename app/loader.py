@@ -3,8 +3,8 @@ import urllib.request
 from db import carregar_urls
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain.vectorstores import FAISS
 
 # Função para baixar os PDFs das URLs fornecidas
 def baixar_pdfs(urls):
@@ -29,7 +29,8 @@ def carregar_banco_vetorial(pasta_persistencia="vector_db", reindexar=False):
 
     # Se a base já existe e reindexar=False, só carrega
     if not reindexar and os.path.exists(pasta_persistencia) and os.listdir(pasta_persistencia):
-        return Chroma(persist_directory=pasta_persistencia, embedding_function=embeddings)
+       # return Chroma(persist_directory=pasta_persistencia, embedding_function=embeddings)
+       return FAISS.load_local(pasta_persistencia, embeddings)
 
     # Se reindexar=True ou a base ainda não existe, processa tudo de novo
     documentos = []
@@ -47,8 +48,9 @@ def carregar_banco_vetorial(pasta_persistencia="vector_db", reindexar=False):
     bookstack_docs = carregar_base_bookstack()
     textos.extend(splitter.split_documents(bookstack_docs))
 
-    vector_db = Chroma.from_documents(textos, embedding=embeddings, persist_directory=pasta_persistencia)
-    vector_db.persist()  # Salva no disco
+    vector_db = FAISS.from_documents(textos, embeddings) #Chroma.from_documents(textos, embedding=embeddings, persist_directory=pasta_persistencia)
+    
+    vector_db.save_local(pasta_persistencia)
 
     return vector_db
 
