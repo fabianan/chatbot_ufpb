@@ -46,7 +46,7 @@ streamlit run .\app\main.py
 
     Modelos LLM (Gemini, LLaMA, etc.)
 
-    Armazenamento vetorial com ChromaDB
+    Armazenamento vetorial com FAISS
 
     PDF/Text parsing + Embedding
 

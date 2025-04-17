@@ -1,10 +1,10 @@
 import os
 import urllib.request
-from db import carregar_urls
+
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 
 # Função para baixar os PDFs das URLs fornecidas
 def baixar_pdfs(urls):
@@ -30,7 +30,11 @@ def carregar_banco_vetorial(pasta_persistencia="vector_db", reindexar=False):
     # Se a base já existe e reindexar=False, só carrega
     if not reindexar and os.path.exists(pasta_persistencia) and os.listdir(pasta_persistencia):
        # return Chroma(persist_directory=pasta_persistencia, embedding_function=embeddings)
-       return FAISS.load_local(pasta_persistencia, embeddings)
+       return FAISS.load_local(
+            folder_path=pasta_persistencia,
+            embeddings=embeddings,
+            allow_dangerous_deserialization=True
+        )
 
     # Se reindexar=True ou a base ainda não existe, processa tudo de novo
     documentos = []

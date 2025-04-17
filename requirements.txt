@@ -11,7 +11,8 @@ transformers==4.50.3
 langchain-openai==0.3.12
 #chromadb==1.0.4
 sentence-transformers==4.0.2
-faiss-cpu==1.8.0
-pysqlite3-binary  
+faiss-cpu==1.10.0
+pysqlite3-binary
+langchain-huggingface>=0.1.2  
 
 
